@@ -4,6 +4,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
 from authorResponse import AuthorResponse
 import jsonpickle
+import json
 
 
 def authorbased(title):
@@ -47,8 +48,10 @@ def authorbased(title):
         book_indices = [i[0] for i in sim_scores]
         #for i in book_indices:
           #  book_indices=i+1
-        # data=AuthorResponse(titles.iloc[book_indices],g_id.iloc[book_indices],url.iloc[book_indices])
-        # dataset=jsonpickle.encode(data, unpicklable=False)
+        data=AuthorResponse(titles.iloc[book_indices].tolist(),g_id.iloc[book_indices].tolist(),url.iloc[book_indices].tolist())
+        # dataset=jsonpickle.encode(data)
+        # print(titles.iloc[book_indices])
+        dataset = json.dumps(data.__dict__)
         # data={
         #         "154":[
         #             {"id":"154","title":"The Two Towers (The Lord of the Rings, #2)","url":"https://images.gr-assets.com/books/1298415523m..."}],
@@ -56,11 +59,11 @@ def authorbased(title):
         #             {"id":"160","title":"The Return of the King (The Lord of the Rings)","url":"https://images.gr-assets.com/books/1389977161m..."}]
         #         }
         # dataset=json.dumps(data)
-        dataset={
-            str(g_id.iloc[book_indices]):[
-                {"id":str(g_id.iloc[book_indices]),"title":str(titles.iloc[book_indices]),"url":str(url.iloc[book_indices])}
-            ]
-        }
+        # dataset={
+        #     str(g_id.iloc[book_indices]):[
+        #         {"id":str(g_id.iloc[book_indices]),"title":str(titles.iloc[book_indices]),"url":str(url.iloc[book_indices])}
+        #     ]
+        # }
         # dataset=json.dumps(d)
         # def dumper(data):
         #     try:x
@@ -78,7 +81,7 @@ def authorbased(title):
         # print(dataset)
         return dataset         
         
-        #print(books[books["goodreads_book_id","title"]]==titles.iloc[book_indices])
+        # print(books[books["goodreads_book_id","title"]]==titles.iloc[book_indices])
         #return titles.iloc[book_indices]
 
     return authors_recommendations(title)

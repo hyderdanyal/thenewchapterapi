@@ -14,12 +14,12 @@ def index():
    title = request.args.get('Title')
    data=authorbased(title)
 #    dataset=jsonify(data)
-   print(type(data))
+   # print((data))
    # json_data=json.dumps(data)
    # print(json_data)
    # print(type(json_data))
    resp=Response(data,status=200,mimetype='application/json')
-   return data
+   return resp
    
 
 @app.route("/tagbased")
