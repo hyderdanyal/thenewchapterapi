@@ -19,7 +19,7 @@ def index():
    # print(json_data)
    # print(type(json_data))
    resp=Response(data,status=200,mimetype='application/json')
-   return resp
+   return jsonify(data)
    
 
 @app.route("/tagbased")

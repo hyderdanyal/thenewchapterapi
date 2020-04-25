@@ -47,11 +47,18 @@ def authorbased(title):
         sim_scores = sim_scores[1:21]
         book_indices = [i[0] for i in sim_scores]
         #for i in book_indices:
-          #  book_indices=i+1
-        data=AuthorResponse(titles.iloc[book_indices].tolist(),g_id.iloc[book_indices].tolist(),url.iloc[book_indices].tolist())
+        data=[]
+        for i in book_indices:
+            author=AuthorResponse(titles.iloc[i],str(g_id.iloc[i]),url.iloc[i])
+            author=json.dumps(author.__dict__)
+            author=json.loads(author)
+            data.append(author)
+        
+        # data=AuthorResponse(titles.iloc[book_indices].tolist(),g_id.iloc[book_indices].tolist(),url.iloc[book_indices].tolist())
+        dataset=data   
         # dataset=jsonpickle.encode(data)
         # print(titles.iloc[book_indices])
-        dataset = json.dumps(data.__dict__)
+        # dataset = json.dumps(data.__dict__)
         # data={
         #         "154":[
         #             {"id":"154","title":"The Two Towers (The Lord of the Rings, #2)","url":"https://images.gr-assets.com/books/1298415523m..."}],
