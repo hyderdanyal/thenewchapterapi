@@ -4,6 +4,9 @@ import pandas as pd
 from flask_cors import CORS
 from authorbased import *
 from tagbased import *
+from timebased import *
+from ratingbased import *
+from RecommendationMF import *
 app = Flask(__name__)
 CORS(app)
 
@@ -25,8 +28,24 @@ def index():
 @app.route("/tagbased")
 def tags():
    title = request.args.get('Title')
-   print(type(tagbased(title).to_json()))
-   return tagbased(title).to_json()
+   data=tagbased(title)
+   return jsonify(data)
 
+@app.route("/timebased")
+def time():
+#    title = request.args.get('Title')
+   data=timebased()
+   return jsonify(data)
+
+@app.route("/ratingbased")
+def rating():
+   data=ratingbased()
+   return jsonify(data)   
+
+@app.route("/matrixfactorization")
+def recommend():
+    uid=request.args.get('uid')
+    data=Recommendation(uid)
+    return jsonify(data)
 if __name__ == " __main__ ":
     app.run(debug=True)

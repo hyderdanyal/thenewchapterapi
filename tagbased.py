@@ -8,6 +8,9 @@ Created on Tue Apr 21 19:43:31 2020
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
 import pandas as pd
+from tagResponse import TagResponse
+import jsonpickle
+import json
 
 def tagbased(title):
     books = pd.read_csv('dataset/books.csv', encoding = "ISO-8859-1")
@@ -36,7 +39,10 @@ def tagbased(title):
     tfidf_matrix1 = tf1.fit_transform(books_with_tags['tag_name'].head(10000))
     cosine_sim1 = linear_kernel(tfidf_matrix1, tfidf_matrix1)
 
-    titles1 = books['title']
+    titles = books['title']
+    g_id=books['goodreads_book_id']
+    url=books['image_url']
+    des=books['desc']
     indices1 = pd.Series(books.index, index=books['title'])
 
     # Function that get book recommendations based on the cosine similarity score of books tags
@@ -44,8 +50,16 @@ def tagbased(title):
         idx = indices1[title]
         sim_scores = list(enumerate(cosine_sim1[idx]))
         sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
-        sim_scores = sim_scores[1:21]
+        sim_scores = sim_scores[1:5]
         book_indices = [i[0] for i in sim_scores]
-        return titles1.iloc[book_indices]
+        data=[]
+        for i in book_indices:
+            tag=TagResponse(titles.iloc[i],str(g_id.iloc[i]),url.iloc[i],des.iloc[i])
+            tag=json.dumps(tag.__dict__)
+            tag=json.loads(tag)
+            data.append(tag)
+        dataset=data   
+        
+        return dataset
 
-    return tags_recommendations(title).head(20)
+    return tags_recommendations(title)

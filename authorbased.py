@@ -28,6 +28,8 @@ def authorbased(title):
     to_read = pd.read_csv('dataset/to_read.csv')
     to_read.head()
 
+
+
     tf = TfidfVectorizer(analyzer='word',ngram_range=(1, 2),min_df=0, stop_words='english')
     tfidf_matrix = tf.fit_transform(books['authors'])
     cosine_sim = linear_kernel(tfidf_matrix, tfidf_matrix)
@@ -36,6 +38,7 @@ def authorbased(title):
     titles = books['title']
     g_id=books['goodreads_book_id']
     url=books['image_url']
+    des=books['desc']
 
     indices = pd.Series(books.index, index=books['title'])
 
@@ -49,42 +52,14 @@ def authorbased(title):
         #for i in book_indices:
         data=[]
         for i in book_indices:
-            author=AuthorResponse(titles.iloc[i],str(g_id.iloc[i]),url.iloc[i])
+            author=AuthorResponse(titles.iloc[i],str(g_id.iloc[i]),url.iloc[i],des.iloc[i])
             author=json.dumps(author.__dict__)
             author=json.loads(author)
             data.append(author)
         
         # data=AuthorResponse(titles.iloc[book_indices].tolist(),g_id.iloc[book_indices].tolist(),url.iloc[book_indices].tolist())
         dataset=data   
-        # dataset=jsonpickle.encode(data)
-        # print(titles.iloc[book_indices])
-        # dataset = json.dumps(data.__dict__)
-        # data={
-        #         "154":[
-        #             {"id":"154","title":"The Two Towers (The Lord of the Rings, #2)","url":"https://images.gr-assets.com/books/1298415523m..."}],
-        #         "160":[
-        #             {"id":"160","title":"The Return of the King (The Lord of the Rings)","url":"https://images.gr-assets.com/books/1389977161m..."}]
-        #         }
-        # dataset=json.dumps(data)
-        # dataset={
-        #     str(g_id.iloc[book_indices]):[
-        #         {"id":str(g_id.iloc[book_indices]),"title":str(titles.iloc[book_indices]),"url":str(url.iloc[book_indices])}
-        #     ]
-        # }
-        # dataset=json.dumps(d)
-        # def dumper(data):
-        #     try:x
-        #         return data.toJSON()
-        #     except:
-        #         return data.__dict__    
-        # dataset=json.dumps(data,default=dumper,indent=2)
-        # dataLoad=json.loads(dataset)
-        # data_set={'title':titles.iloc[book_indices],'id':g_id.iloc[book_indices],'url':url.iloc[book_indices]}
-        # return(titles.iloc[book_indices],g_id.iloc[book_indices],url.iloc[book_indices])
-        # print("Titles are:",titles.iloc[book_indices])
-        # print("Good_read books Id is",g_id.iloc[book_indices])
-        # print("URL is",url.iloc[book_indices])
-
+        
         # print(dataset)
         return dataset         
         
