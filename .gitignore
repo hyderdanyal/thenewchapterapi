@@ -1,0 +1,7 @@
+dataset/*
+__pycache__/*
+.idea/*
+.vs/*
+.vscode/*
+model_pickle
+newratings.csv
