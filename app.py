@@ -9,6 +9,8 @@ from ratingbased import *
 from RecommendationMF import *
 from genre import *
 from search import *
+from searchpage import *
+from feedback import *
 
 app = Flask(__name__)
 CORS(app)
@@ -19,12 +21,7 @@ def index():
 
    title = request.args.get('Title')
    data=authorbased(title)
-#    dataset=jsonify(data)
-   # print((data))
-   # json_data=json.dumps(data)
-   # print(json_data)
-   # print(type(json_data))
-   # resp=Response(data,status=200,mimetype='application/json')
+
    return jsonify(data)
    
 
@@ -62,8 +59,21 @@ def bookgenre():
 def search():
     searchvalue=request.args.get('q')
     data=searchbook(searchvalue)
-    return jsonify(data)    
+    return jsonify(data) 
+       
+@app.route("/searchresult")
+def searchresult():
+    searchvalue=request.args.get('q')
+    data=searchpage(int(searchvalue))
+    return jsonify(data)
 
+@app.route("/feedback")
+def email():
+   name=request.args.get('name')
+   email=request.args.get('email')
+   msg=request.args.get('msg')
+   feedback(msg,name,email)
+   return jsonify('Mail Sent')
 
 if __name__ == " __main__ ":
     app.run(debug=True)

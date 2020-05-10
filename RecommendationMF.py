@@ -109,4 +109,5 @@ def Recommendation(uid):
         rec=json.loads(rec)
         data.append(rec)
     
-    return data    
+    return data  
+Recommendation('49925')
