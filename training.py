@@ -71,7 +71,7 @@ def training():
     # Split the dataset for 5-fold evaluation
     kf = KFold(n_splits=5)
     svd = SVD()
-
+    
     for trainset, testset in kf.split(data):
 
         # train and test algorithm.

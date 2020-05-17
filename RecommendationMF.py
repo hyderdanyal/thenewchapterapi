@@ -28,43 +28,7 @@ def Recommendation(uid):
     # Reading movies file
     books = pd.read_csv('dataset/newbooks.csv',  usecols=['book_id','title', 'genre','image_url','desc'],encoding="ISO-8859-1")
 
-    # books.head()
-
-    # ratings.head()
-
-    # Top 20 movies that User 1310 has rated 
-    # already_rated.head(20)
-
-    # predictions
-
-    # Load Reader library
-    # reader = Reader()
-
-    # # Load ratings dataset with Dataset library
-    # data = Dataset.load_from_df(ratings[['user_id', 'book_id', 'rating']], reader)
-
-    # # Split the dataset for 5-fold evaluation
-    # kf = KFold(n_splits=5)
-    # svd = SVD()
-
-    # for trainset, testset in kf.split(data):
-
-    #     # train and test algorithm.
-    #     svd.fit(trainset)
-    #     predictions = svd.test(testset)
-
-    #     # Compute and print Root Mean Squared Error
-    #     accuracy.rmse(predictions, verbose=True)
-
-    # trainset = data.build_full_trainset()
-    # svd.fit(trainset)
-
-    # predictions
-
-    # a= ratings[ratings['user_id'] == 1310]
-    # pd.set_option("display.max_rows", None, "display.max_columns", None)
-    # a
-
+   
     # svd.predict(1310,26)
     import pickle
 
@@ -74,29 +38,27 @@ def Recommendation(uid):
 
     # uid=1310
     # ratings
-    # for i in ratings.user_id:
+    
     h=[]
     
-    print(type(uid),'******************************************************',type(ratings.user_id[0]))
-    print('aaaaaaaaaaa',ratings.head(10))
+    # print(type(uid),'******************************************************',type(ratings.user_id[0]))
+    # print('aaaaaaaaaaa',ratings.head(10))
     c=ratings[ratings['user_id'] == uid]
-    print('ddddddd',c)
+    # print('ddddddd',c)
     d=books[~books.book_id.isin(c.book_id)]
-    # print(d)
-    # print(len(c),len(d),len(books))
+    
     for _,row in d.iterrows():
         h.append(mp.predict(uid,row.book_id))
     h=pd.DataFrame(h)
-    sortedest=h.sort_values(by='est',ascending=False).head(10)
+    sortedest=h.sort_values(by='est',ascending=False).head(30)
     # sortedest
 
     mergedest=d.merge(sortedest[['est']],left_on='book_id',right_on=sortedest.iid)
 
-    # Recommendation=books[books.book_id.isin(sortedest.iid)]
     Recommendation= mergedest.sort_values(by='est',ascending=False)
     # Recommendation
-    print('Recommended Books for ',uid)
-    print(Recommendation)
+    # print('Recommended Books for ',uid)
+    # print(Recommendation)
     titles=Recommendation['title']
     bk_id=Recommendation['book_id']
     url=Recommendation['image_url']
@@ -110,4 +72,3 @@ def Recommendation(uid):
         data.append(rec)
     
     return data  
-Recommendation('49925')

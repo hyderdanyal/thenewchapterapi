@@ -11,7 +11,7 @@ unique =df_tags.goodreads_book_id.unique()
 print(unique)
 
 
-# k=1
+
 h=0
 g=[]
 t=[]
@@ -21,16 +21,12 @@ for i in unique:
 
   
   gr=df_tags.loc[df_tags['goodreads_book_id'] == i]
-  # gr.dropna(subset=['tag_id'])
   
-#   if(math.isnan(gr['count'].max())):
-#     k=k+1
-#   else:  
     
   g.append(i)
   t.append(gr['tag_id'].iloc[0])
   c.append(gr['count'].max())
-  # print(k,gr['tag_id'],gr['count'].max())
+  
   
     
 print(len(g),len(t),len(c))

@@ -11,6 +11,7 @@ from genre import *
 from search import *
 from searchpage import *
 from feedback import *
+from connectfirebase import *
 
 app = Flask(__name__)
 CORS(app)
@@ -20,7 +21,7 @@ CORS(app)
 def index():  
 
    title = request.args.get('Title')
-   data=authorbased(title)
+   data=authorbased(int(title))
 
    return jsonify(data)
    
@@ -28,12 +29,12 @@ def index():
 @app.route("/tagbased")
 def tags():
    title = request.args.get('Title')
-   data=tagbased(title)
+   data=tagbased(int(title))
    return jsonify(data)
 
 @app.route("/timebased")
 def time():
-#    title = request.args.get('Title')
+
    data=timebased()
    return jsonify(data)
 
@@ -45,7 +46,7 @@ def rating():
 @app.route("/matrixfactorization")
 def recommend():
     uid=request.args.get('uid')
-   #  return uid
+   
     data=Recommendation(uid)
     return jsonify(data)
 
@@ -74,6 +75,13 @@ def email():
    msg=request.args.get('msg')
    feedback(msg,name,email)
    return jsonify('Mail Sent')
+
+@app.route("/bookname")   
+def bookname():
+   name=request.args.get('name')
+   uid=request.args.get('uid')
+   data=bookid(name,uid)
+   return jsonify(data)
 
 if __name__ == " __main__ ":
     app.run(debug=True)

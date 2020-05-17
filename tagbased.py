@@ -12,7 +12,7 @@ from tagResponse import TagResponse
 import json
 
 def tagbased(title):
-    books = pd.read_csv('dataset/books.csv', encoding = "ISO-8859-1")
+    books = pd.read_csv('dataset/newbooks.csv', encoding = "ISO-8859-1")
     books.head()
 
     books.shape
@@ -39,17 +39,17 @@ def tagbased(title):
     cosine_sim1 = linear_kernel(tfidf_matrix1, tfidf_matrix1)
 
     titles = books['title']
-    g_id=books['goodreads_book_id']
+    g_id=books['book_id']
     url=books['image_url']
     des=books['desc']
-    indices1 = pd.Series(books.index, index=books['title'])
+    indices1 = pd.Series(books.index, index=books['book_id'])
 
     # Function that get book recommendations based on the cosine similarity score of books tags
     def tags_recommendations(title):
         idx = indices1[title]
         sim_scores = list(enumerate(cosine_sim1[idx]))
         sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
-        sim_scores = sim_scores[1:5]
+        sim_scores = sim_scores[1:11]
         book_indices = [i[0] for i in sim_scores]
         data=[]
         for i in book_indices:
