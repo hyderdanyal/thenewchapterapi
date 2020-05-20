@@ -5,10 +5,7 @@ import json
 
 def searchbook(searchvalue):
     df=pd.read_csv('dataset/newbooks.csv',encoding="ISO-8859-1")
-    # books=df[df.isin([searchvalue])].stack()
-    # books=df[df.eq(searchvalue).any(1)]
-    # books=df
-    # books["Indexes"] = books['title'].str.find(searchvalue)
+    
     books=df[df.apply(lambda row: row.astype(str).str.contains(searchvalue,na=False).any(), axis=1)]
     
     print(books) 
@@ -26,4 +23,3 @@ def searchbook(searchvalue):
         gen=json.loads(gen)
         data.append(gen)
     return data    
-# searchbook('asas')    

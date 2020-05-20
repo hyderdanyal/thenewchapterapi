@@ -6,7 +6,7 @@ from ratingResponse import RatingResponse
 
 
 def ratingbased():
-   books=pd.read_csv('dataset/books.csv', encoding = "ISO-8859-1")
+   books=pd.read_csv('dataset/newbooks.csv', encoding = "ISO-8859-1")
 
    books.head()
 
@@ -15,7 +15,7 @@ def ratingbased():
    sorted_books=books.sort_values(by=["average_rating","ratings_count" ],
     axis=0, ascending=False , kind="quicksort", na_position="last")
    titles = sorted_books['title']
-   g_id=sorted_books['goodreads_book_id']
+   g_id=sorted_books['book_id']
    url=sorted_books['image_url']
    des=sorted_books['desc']
 

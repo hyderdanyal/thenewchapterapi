@@ -15,9 +15,5 @@ print(lenght1,lenght3)
 
 
 gender.to_csv('out.csv',index=False)
-# import csv
-# with open('out.csv', 'w', newline='') as csvfile:
-#     spamwriter = csv.writer(csvfile, delimiter=' ',
-#                             quotechar='|', quoting=csv.QUOTE_MINIMAL)
-#     spamwriter.writerow(ratings)
+
     

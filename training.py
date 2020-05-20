@@ -69,9 +69,9 @@ def training():
     data = Dataset.load_from_df(ratings[['user_id', 'book_id', 'rating']], reader)
 
     # Split the dataset for 5-fold evaluation
-    kf = KFold(n_splits=2)
+    kf = KFold(n_splits=5)
     svd = SVD()
-
+    
     for trainset, testset in kf.split(data):
 
         # train and test algorithm.
