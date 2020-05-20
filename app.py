@@ -76,12 +76,7 @@ def email():
    feedback(msg,name,email)
    return jsonify('Mail Sent')
 
-@app.route("/bookname")   
-def bookname():
-   name=request.args.get('name')
-   uid=request.args.get('uid')
-   data=bookid(name,uid)
-   return jsonify(data)
+
 
 if __name__ == " __main__ ":
     app.run(debug=True)
