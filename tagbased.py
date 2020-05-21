@@ -11,37 +11,35 @@ import pandas as pd
 from tagResponse import TagResponse
 import json
 
+
 def tagbased(title):
-    books = pd.read_csv('dataset/newbooks.csv', encoding = "ISO-8859-1")
-    books.head()
+    books = pd.read_csv('dataset/newbooks.csv', encoding="ISO-8859-1")
+    # books.head()
 
-    books.shape
+    # books.shape
 
-    ratings = pd.read_csv('dataset/ratings.csv', encoding = "ISO-8859-1")
-    ratings.head()
-
-    book_tags = pd.read_csv('dataset/book_tags.csv', encoding = "ISO-8859-1")
-    book_tags.head()
+    book_tags = pd.read_csv('dataset/book_tags.csv', encoding="ISO-8859-1")
+    # book_tags.head()
 
     tags = pd.read_csv('dataset/tags.csv')
-    tags.tail()
+    # tags.tail()
 
-    tags_join_DF = pd.merge(book_tags, tags, left_on='tag_id', right_on='tag_id', how='inner')
-    tags_join_DF.head()
+    tags_join_DF = pd.merge(
+        book_tags, tags, left_on='tag_id', right_on='tag_id', how='inner')
+    # tags_join_DF.head()
 
-    to_read = pd.read_csv('dataset/to_read.csv')
-    to_read.head()
+    books_with_tags = pd.merge(
+        books, tags_join_DF, left_on='book_id', right_on='goodreads_book_id', how='inner')
 
-    books_with_tags = pd.merge(books, tags_join_DF, left_on='book_id', right_on='goodreads_book_id', how='inner')
-
-    tf1 = TfidfVectorizer(analyzer='word',ngram_range=(1, 2),min_df=0, stop_words='english')
+    tf1 = TfidfVectorizer(analyzer='word', ngram_range=(
+        1, 2), min_df=0, stop_words='english')
     tfidf_matrix1 = tf1.fit_transform(books_with_tags['tag_name'].head(10000))
     cosine_sim1 = linear_kernel(tfidf_matrix1, tfidf_matrix1)
 
     titles = books['title']
-    g_id=books['book_id']
-    url=books['image_url']
-    des=books['desc']
+    g_id = books['book_id']
+    url = books['image_url']
+    des = books['desc']
     indices1 = pd.Series(books.index, index=books['book_id'])
 
     # Function that get book recommendations based on the cosine similarity score of books tags
@@ -51,14 +49,15 @@ def tagbased(title):
         sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
         sim_scores = sim_scores[1:11]
         book_indices = [i[0] for i in sim_scores]
-        data=[]
+        data = []
         for i in book_indices:
-            tag=TagResponse(titles.iloc[i],str(g_id.iloc[i]),url.iloc[i],des.iloc[i])
-            tag=json.dumps(tag.__dict__)
-            tag=json.loads(tag)
+            tag = TagResponse(titles.iloc[i], str(
+                g_id.iloc[i]), url.iloc[i], des.iloc[i])
+            tag = json.dumps(tag.__dict__)
+            tag = json.loads(tag)
             data.append(tag)
-        dataset=data   
-        
+        dataset = data
+
         return dataset
 
     return tags_recommendations(title)
