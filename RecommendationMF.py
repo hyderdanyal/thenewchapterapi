@@ -14,61 +14,62 @@ import pandas as pd
 from scipy.sparse.linalg import svds
 # Import libraries from Surprise package
 from surprise import Reader, Dataset, SVD, accuracy
-from surprise.model_selection import cross_validate,KFold
+from surprise.model_selection import cross_validate, KFold
 from RecommendResponse import *
 import json
 
+
 def Recommendation(uid):
     # Reading ratings file
-    ratings = pd.read_csv('dataset/ratings.csv',  usecols=['user_id', 'book_id', 'rating'],encoding="ISO-8859-1")
+    ratings = pd.read_csv(
+        'dataset/ratings.csv',  usecols=['user_id', 'book_id', 'rating'], encoding="ISO-8859-1")
     ratings['user_id'] = ratings['user_id'].apply(str)
-    # Reading users file
-    # users = pd.read_csv('dataset/users.csv', sep='\t', usecols=['user_id', 'gender', 'zipcode', 'age_desc', 'occ_desc'],encoding="ISO-8859-1")
 
     # Reading movies file
-    books = pd.read_csv('dataset/newbooks.csv',  usecols=['book_id','title', 'genre','image_url','desc'],encoding="ISO-8859-1")
+    books = pd.read_csv('dataset/newbooks.csv',  usecols=[
+                        'book_id', 'title', 'genre', 'image_url', 'desc'], encoding="ISO-8859-1")
 
-   
     # svd.predict(1310,26)
     import pickle
 
-    with open('model_pickle','rb') as f:
-        mp=pickle.load(f)
-
+    with open('model_pickle', 'rb') as f:
+        mp = pickle.load(f)
 
     # uid=1310
     # ratings
-    
-    h=[]
-    
+
+    h = []
+
     # print(type(uid),'******************************************************',type(ratings.user_id[0]))
     # print('aaaaaaaaaaa',ratings.head(10))
-    c=ratings[ratings['user_id'] == uid]
+    c = ratings[ratings['user_id'] == uid]
     # print('ddddddd',c)
-    d=books[~books.book_id.isin(c.book_id)]
-    
-    for _,row in d.iterrows():
-        h.append(mp.predict(uid,row.book_id))
-    h=pd.DataFrame(h)
-    sortedest=h.sort_values(by='est',ascending=False).head(30)
+    d = books[~books.book_id.isin(c.book_id)]
+
+    for _, row in d.iterrows():
+        h.append(mp.predict(uid, row.book_id))
+    h = pd.DataFrame(h)
+    sortedest = h.sort_values(by='est', ascending=False).head(30)
     # sortedest
 
-    mergedest=d.merge(sortedest[['est']],left_on='book_id',right_on=sortedest.iid)
+    mergedest = d.merge(sortedest[['est']],
+                        left_on='book_id', right_on=sortedest.iid)
 
-    Recommendation= mergedest.sort_values(by='est',ascending=False)
+    Recommendation = mergedest.sort_values(by='est', ascending=False)
     # Recommendation
     # print('Recommended Books for ',uid)
     # print(Recommendation)
-    titles=Recommendation['title']
-    bk_id=Recommendation['book_id']
-    url=Recommendation['image_url']
-    des=Recommendation['desc']
+    titles = Recommendation['title']
+    bk_id = Recommendation['book_id']
+    url = Recommendation['image_url']
+    des = Recommendation['desc']
     indices = pd.Series(Recommendation.index, index=Recommendation['title'])
-    data=[]
+    data = []
     for i in indices:
-        rec=RecommendResponse(titles.iloc[i],str(bk_id.iloc[i]),url.iloc[i],des.iloc[i])
-        rec=json.dumps(rec.__dict__)
-        rec=json.loads(rec)
+        rec = RecommendResponse(titles.iloc[i], str(
+            bk_id.iloc[i]), url.iloc[i], des.iloc[i])
+        rec = json.dumps(rec.__dict__)
+        rec = json.loads(rec)
         data.append(rec)
-    
-    return data  
+
+    return data
