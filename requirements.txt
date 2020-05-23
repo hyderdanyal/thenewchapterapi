@@ -1,0 +1,8 @@
+Flask
+numpy
+pandas
+scikit-learn
+scikit-surprise
+firebase-admin
+Flask-Cors
+wheel
