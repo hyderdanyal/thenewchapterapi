@@ -18,11 +18,6 @@ CORS(app)
 app.debug = True
 
 
-@app.route("/")
-def home():
-    return "Welcome to the API"
-
-
 @app.route("/authorbased")
 def index():
     try:
@@ -94,4 +89,4 @@ def email():
 
 
 if __name__ == " __main__ ":
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True)
