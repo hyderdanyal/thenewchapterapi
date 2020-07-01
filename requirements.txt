@@ -6,4 +6,7 @@ scikit-surprise
 firebase-admin
 Flask-Cors
 wheel
+<<<<<<< HEAD
 uwsgi
+=======
+>>>>>>> f53120670f7fd247e9f2ea5d51b0ea26b1bb6817
