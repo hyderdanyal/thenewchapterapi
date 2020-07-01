@@ -50,7 +50,7 @@ def training():
     Ratings_demeaned = R - user_ratings_mean.reshape(-1, 1)
 
     sparsity = round(1.0 - len(ratings) / float(n_users * n_books), 3)
-    # print ('The sparsity level of MovieLens1M dataset is ' +  str(sparsity * 100) + '%')
+    # print ('The sparsity level of Goodbooks10k dataset is ' +  str(sparsity * 100) + '%')
 
     U, sigma, Vt = svds(Ratings_demeaned, k=50)
 

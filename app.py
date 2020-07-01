@@ -20,11 +20,14 @@ app.debug = True
 
 @app.route("/authorbased")
 def index():
+    try:
+        title = request.args.get('Title')
 
-    title = request.args.get('Title')
-    data = authorbased(int(title))
+        data = authorbased(int(title))
 
-    return jsonify(data)
+        return jsonify(data)
+    except Exception as err:
+        return("Exception error: {0}".format(err))
 
 
 @app.route("/tagbased")
