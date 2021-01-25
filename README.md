@@ -1,5 +1,7 @@
 The New Chapter API
 
+set FLASK_APP=app.py
+
 This project was made by Python Flask
 
 The dataset is located at "https://www.kaggle.com/danyalhyder/the-new-chapterbook-recommendation-system"
